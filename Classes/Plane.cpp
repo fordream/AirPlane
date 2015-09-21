@@ -51,10 +51,22 @@ void Plane::moveTo(Vec2 location){
 	}
 }
 void Plane::blowUp(){
+	//if (isAlive)
+	//{
+	//	isAlive = false;
+	//	auto animation = Animation::create();
+	//	animation->setDelayPerUnit(0.2f);
+	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n1.png"));
+	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n2.png"));
+	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n3.png"));
+	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n4.png"));
 
-}
-void Plane::remove(){
-
+	//	auto animate = Animate::create(animation);
+	//	auto removePlane = CallFunc::create(CC_CALLBACK_0(PlaneLayer::RemovePlane, this));
+	//	auto sequence = Sequence::create(animate, removePlane, nullptr);
+	//	this->getChildByTag(AIRPLANE)->stopAllActions();
+	//	this->getChildByTag(AIRPLANE)->runAction(sequence);
+	//}
 }
 Plane* Plane::create()
 {

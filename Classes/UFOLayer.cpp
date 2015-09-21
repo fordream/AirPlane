@@ -11,13 +11,13 @@ bool UFOLayer::init()
 		return false;
 	}
 
-	this->schedule(schedule_selector(UFOLayer::AddMutiBullets), 20.0);
-	this->schedule(schedule_selector(UFOLayer::AddBigBoom), 20.0, kRepeatForever, 5.0);
+	this->schedule(schedule_selector(UFOLayer::addMutiBullets), 20.0);
+	this->schedule(schedule_selector(UFOLayer::addBigBoom), 20.0, kRepeatForever, 5.0);
 
 	return true;;
 }
 
-void UFOLayer::AddMutiBullets(float dt)
+void UFOLayer::addMutiBullets(float dt)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("out_porp.mp3");
 	auto mutiBullets = Sprite::createWithSpriteFrameName("ufo1.png");
@@ -50,7 +50,7 @@ void UFOLayer::mutiBulletsMoveFinished(Node* pSender)
 	allMutiBullets.eraseObject(mutiBullets);
 }
 
-void UFOLayer::AddBigBoom(float dt)
+void UFOLayer::addBigBoom(float dt)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("out_porp.mp3");
 	auto bigBoom = Sprite::createWithSpriteFrameName("ufo2.png");
@@ -83,13 +83,13 @@ void UFOLayer::bigBoomMoveFinished(Node* pSender)
 	allBigBoom.eraseObject(bigBoom);
 }
 
-void UFOLayer::RemoveMutiBullets(Sprite* mutiBullets)
+void UFOLayer::removeMutiBullets(Sprite* mutiBullets)
 {
 	this->removeChild(mutiBullets, true);
 	allMutiBullets.eraseObject(mutiBullets);
 }
 
-void UFOLayer::RemoveBigBoom(Sprite* bigBoom)
+void UFOLayer::removeBigBoom(Sprite* bigBoom)
 {
 	this->removeChild(bigBoom, true);
 	allBigBoom.eraseObject(bigBoom);

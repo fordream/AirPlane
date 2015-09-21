@@ -29,11 +29,28 @@ bool GameScene::init()
 	_enemyLayer = EnemyLayer::create();
 	if (!_enemyLayer)
 		return false;
+
+	_UFOLayer = UFOLayer::create();
+	if (!_UFOLayer)
+		return false;
+
+	_mutiBulletsLayer = MutiBulletsLayer::create();
+	if (!_mutiBulletsLayer)
+		return false;
+
 	//飞机层在游戏层的上层
 	this->addChild(_gameLayer,-10);
 	this->addChild(_planeLayer,-9);
 	this->addChild(_bulletLayer, -9);
 	this->addChild(_enemyLayer, -9);
+	this->addChild(_UFOLayer, -9);
+	this->addChild(_mutiBulletsLayer, -9);
+
+	_gameLayer->setBulletLayer(_bulletLayer);
+	_gameLayer->setPlaneLayer(_planeLayer);
+	_gameLayer->setEnemyLayer(_enemyLayer);
+	_gameLayer->setUFOLayer(_UFOLayer);
+	_gameLayer->setMutiBulletsLayer(_mutiBulletsLayer);
 
 	_bulletLayer->startShoot(1);
 	return true;

@@ -140,10 +140,16 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Enemy.cpp" />
     <ClCompile Include="..\Classes\EnemyLayer.cpp" />
     <ClCompile Include="..\Classes\GameLayer.cpp" />
+    <ClCompile Include="..\Classes\GameOverLayer.cpp" />
+    <ClCompile Include="..\Classes\GameOverScene.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\MutiBulletsLayer.cpp" />
     <ClCompile Include="..\Classes\Plane.cpp" />
     <ClCompile Include="..\Classes\PlaneLayer.cpp" />
+    <ClCompile Include="..\Classes\UFOLayer.cpp" />
+    <ClCompile Include="..\Classes\WelcomeLayer.cpp" />
+    <ClCompile Include="..\Classes\WelcomeScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,11 +158,17 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Enemy.h" />
     <ClInclude Include="..\Classes\EnemyLayer.h" />
     <ClInclude Include="..\Classes\GameLayer.h" />
+    <ClInclude Include="..\Classes\GameOverLayer.h" />
+    <ClInclude Include="..\Classes\GameOverScene.h" />
     <ClInclude Include="..\Classes\GameScene.h" />
     <ClInclude Include="..\Classes\Global.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\MutiBulletsLayer.h" />
     <ClInclude Include="..\Classes\Plane.h" />
     <ClInclude Include="..\Classes\PlaneLayer.h" />
+    <ClInclude Include="..\Classes\UFOLayer.h" />
+    <ClInclude Include="..\Classes\WelcomeLayer.h" />
+    <ClInclude Include="..\Classes\WelcomeScene.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

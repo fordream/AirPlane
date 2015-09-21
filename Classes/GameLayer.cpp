@@ -1,5 +1,6 @@
 #include "GameLayer.h"
 #include "Global.h"
+#include "Plane.h"
 USING_NS_CC;
 Level GameLayer::_level = EASY;
 bool GameLayer::init()
@@ -8,11 +9,8 @@ bool GameLayer::init()
 		return false;
 	}
 	_level = EASY;
-
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(SHOOT_BACKGROUND_LIST);
-
-	//之后需要删掉
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(SHOOT_LIST);
+	_score = 0;
+	_bigBoomCount = 0;
 
 	_background1 = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(BACKGROUND_IMAGE));
 	_background1->setAnchorPoint(Vec2(0, 0));
@@ -55,339 +53,335 @@ void GameLayer::update(float dt)
 	}
 
 	Vector<Sprite*> bulletsToDelete;
-	Ref* bt, *et, *ut;
 
 	//enemy1 & bullet CheckCollosion
-	for (int i = 0; i < bulletLayer->getAllBullet().size(); i++){
-		auto bullet = bulletLayer->getAllBullet().at(i);
-	}
-	CCARRAY_FOREACH(this->bulletLayer->m_pAllBullet, bt)
-	{
-		auto bullet = (Sprite*)bt;
-
-		auto enemy1sToDelete = CCArray::create();
-		enemy1sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy1, et)
-		{
-			auto enemy1 = (Enemy*)et;
-			if (bullet->boundingBox().intersectsRect(enemy1->getBoundingBox()))
+	for (int i = 0; i < _bulletLayer->getAllBullet().size(); i++){
+		auto bullet = _bulletLayer->getAllBullet().at(i);
+		Vector<Node*> enemy1sToDelete;
+		for (int j = 0; j < _enemyLayer->_allEnemy1.size(); j++){
+			auto enemy1 = static_cast<Enemy*>(_enemyLayer->_allEnemy1.at(j));
+			if (bullet->getBoundingBox().intersectsRect(enemy1->getBoundingBox()))
 			{
 				if (enemy1->getLife() == 1)
 				{
 					enemy1->loseLife();
-					bulletsToDelete->addObject(bullet);
-					enemy1sToDelete->addObject(enemy1);
-					score += ENEMY1_SCORE;
-					this->controlLayer->updateScore(score);
+					enemy1sToDelete.pushBack(enemy1);
+					_score += ENEMY1_SCORE;
+					//this->controlLayer->updateScore(score);
 				}
-				else;
+				bulletsToDelete.pushBack(bullet);
 			}
 		}
-		CCARRAY_FOREACH(enemy1sToDelete, et)
-		{
-			auto enemy1 = (Enemy*)et;
-			this->enemyLayer->enemy1Blowup(enemy1);
+		for (int j = 0; j < enemy1sToDelete.size(); j++){
+			auto enemy1 = static_cast<Enemy*>(enemy1sToDelete.at(j));
+			_enemyLayer->enemy1Blowup(enemy1);
 		}
-		enemy1sToDelete->release();
 	}
-	CCARRAY_FOREACH(bulletsToDelete, bt)
-	{
-		auto bullet = (Sprite*)bt;
-		this->bulletLayer->RemoveBullet(bullet);
+	for (auto bullet : bulletsToDelete){
+		_bulletLayer->removeBullet(bullet);
 	}
-	bulletsToDelete->removeAllObjects();
+	bulletsToDelete.clear();
 
 	//enemy2 & bullet CheckCollosion
-	CCARRAY_FOREACH(this->bulletLayer->m_pAllBullet, bt)
-	{
-		auto bullet = (Sprite*)bt;
-
-		auto enemy2sToDelete = __Array::create();
-		enemy2sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy2, et)
-		{
-			auto enemy2 = (Enemy*)et;
-			if (bullet->boundingBox().intersectsRect(enemy2->getBoundingBox()))
+	for (int i = 0; i < _bulletLayer->getAllBullet().size(); i++){
+		auto bullet = _bulletLayer->getAllBullet().at(i);
+		Vector<Node*> enemy2sToDelete;
+		for (int j = 0; j < _enemyLayer->_allEnemy2.size(); j++){
+			auto enemy2 = static_cast<Enemy*>(_enemyLayer->_allEnemy2.at(j));
+			if (bullet->getBoundingBox().intersectsRect(enemy2->getBoundingBox()))
 			{
-				if (enemy2->getLife() > 1)
-				{
+				if (enemy2->getLife()>1){
 					enemy2->loseLife();
-					bulletsToDelete->addObject(bullet);
 				}
 				else if (enemy2->getLife() == 1)
 				{
 					enemy2->loseLife();
-					bulletsToDelete->addObject(bullet);
-					enemy2sToDelete->addObject(enemy2);
-					score += ENEMY2_SCORE;
-					this->controlLayer->updateScore(score);
+					enemy2sToDelete.pushBack(enemy2);
+					_score += ENEMY2_SCORE;
+					//this->controlLayer->updateScore(score);
 				}
-				else;
+				bulletsToDelete.pushBack(bullet);
 			}
 		}
-		CCARRAY_FOREACH(enemy2sToDelete, et)
-		{
-			auto enemy2 = (Enemy*)et;
-			this->enemyLayer->enemy2Blowup(enemy2);
+		for (int j = 0; j < enemy2sToDelete.size(); j++){
+			auto enemy2 = static_cast<Enemy*>(enemy2sToDelete.at(j));
+			_enemyLayer->enemy2Blowup(enemy2);
 		}
-		enemy2sToDelete->release();
 	}
-	CCARRAY_FOREACH(bulletsToDelete, bt)
-	{
-		auto bullet = (Sprite*)bt;
-		this->bulletLayer->RemoveBullet(bullet);
+	for (auto bullet : bulletsToDelete){
+		_bulletLayer->removeBullet(bullet);
 	}
-	bulletsToDelete->removeAllObjects();
+	bulletsToDelete.clear();
 
 	//enemy3 & bullet CheckCollosion
-	CCARRAY_FOREACH(this->bulletLayer->m_pAllBullet, bt)
-	{
-		auto bullet = (Sprite*)bt;
-
-		auto enemy3sToDelete = __Array::create();
-		enemy3sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy3, et)
-		{
-			auto enemy3 = (Enemy*)et;
-			if (bullet->boundingBox().intersectsRect(enemy3->getBoundingBox()))
+	for (int i = 0; i < _bulletLayer->getAllBullet().size(); i++){
+		auto bullet = _bulletLayer->getAllBullet().at(i);
+		Vector<Node*> enemy3sToDelete;
+		for (int j = 0; j < _enemyLayer->_allEnemy3.size(); j++){
+			auto enemy3 = static_cast<Enemy*>(_enemyLayer->_allEnemy3.at(j));
+			if (bullet->getBoundingBox().intersectsRect(enemy3->getBoundingBox()))
 			{
-				if (enemy3->getLife() > 1)
-				{
+				if (enemy3->getLife()>1){
 					enemy3->loseLife();
-					bulletsToDelete->addObject(bullet);
 				}
 				else if (enemy3->getLife() == 1)
 				{
 					enemy3->loseLife();
-					bulletsToDelete->addObject(bullet);
-					enemy3sToDelete->addObject(enemy3);
-					score += ENEMY3_SCORE;
-					this->controlLayer->updateScore(score);
+					enemy3sToDelete.pushBack(enemy3);
+					_score += ENEMY3_SCORE;
+					//this->controlLayer->updateScore(score);
 				}
-				else;
+				bulletsToDelete.pushBack(bullet);
 			}
 		}
-		CCARRAY_FOREACH(enemy3sToDelete, et)
-		{
-			auto enemy3 = (Enemy*)et;
-			this->enemyLayer->enemy3Blowup(enemy3);
+		for (int j = 0; j < enemy3sToDelete.size(); j++){
+			auto enemy3 = static_cast<Enemy*>(enemy3sToDelete.at(j));
+			_enemyLayer->enemy3Blowup(enemy3);
 		}
-		enemy3sToDelete->release();
 	}
-	CCARRAY_FOREACH(bulletsToDelete, bt)
-	{
-		auto bullet = (Sprite*)bt;
-		this->bulletLayer->RemoveBullet(bullet);
+	for (auto bullet : bulletsToDelete){
+		_bulletLayer->removeBullet(bullet);
 	}
-	bulletsToDelete->removeAllObjects();
-	bulletsToDelete->release();
+	bulletsToDelete.clear();
 
 
-	auto mutiBulletsToDelete = __Array::create();
-	mutiBulletsToDelete->retain();
-	Ref* mbt;
+	Vector<Sprite*> mutiBulletsToDelete;
 
 	////enemy1 & mutiBullets CheckCollosion
-	CCARRAY_FOREACH(this->mutiBulletsLayer->m_pAllMutiBullets, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-
-		auto enemy1sToDelete = __Array::create();
-		enemy1sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy1, et)
-		{
-			auto enemy1 = (Enemy*)et;
-			if (mutiBullets->boundingBox().intersectsRect(enemy1->getBoundingBox()))
-			{
-				if (enemy1->getLife() == 1)
+	for (auto mutibullet : _mutiBulletsLayer->_allMutiBullets){
+		Vector<Node*> enemy1sToDelete;
+		for (auto enemy1 : _enemyLayer->_allEnemy1){
+			auto enemy = static_cast<Enemy*>(enemy1);
+			if (mutibullet->getBoundingBox().intersectsRect(enemy->getBoundingBox())){
+				if (enemy->getLife() == 1)
 				{
-					enemy1->loseLife();
-					mutiBulletsToDelete->addObject(mutiBullets);
-					enemy1sToDelete->addObject(enemy1);
-					score += ENEMY1_SCORE;
-					this->controlLayer->updateScore(score);
+					enemy->loseLife();
+					enemy1sToDelete.pushBack(enemy);
+					_score += ENEMY1_SCORE;
+					//this->controlLayer->updateScore(score);
 				}
-				else;
+				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 			}
 		}
-		CCARRAY_FOREACH(enemy1sToDelete, et)
-		{
-			auto enemy1 = (Enemy*)et;
-			this->enemyLayer->enemy1Blowup(enemy1);
+		for (auto enemy : enemy1sToDelete){
+			_enemyLayer->enemy1Blowup(static_cast<Enemy*>(enemy));
 		}
-		enemy1sToDelete->release();
+		enemy1sToDelete.clear();
 	}
-	CCARRAY_FOREACH(mutiBulletsToDelete, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-		this->mutiBulletsLayer->RemoveMutiBullets(mutiBullets);
+	for (auto bullet : mutiBulletsToDelete){
+		_mutiBulletsLayer->removeMutiBullets(bullet);
 	}
-	mutiBulletsToDelete->removeAllObjects();
+	mutiBulletsToDelete.clear();
 
 	//enemy2 & mutiBullets CheckCollosion
-	CCARRAY_FOREACH(this->mutiBulletsLayer->m_pAllMutiBullets, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-
-		auto enemy2sToDelete = __Array::create();
-		enemy2sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy2, et)
-		{
-			auto enemy2 = (Enemy*)et;
-			if (mutiBullets->boundingBox().intersectsRect(enemy2->getBoundingBox()))
-			{
-				if (enemy2->getLife() > 1)
+	for (auto mutibullet : _mutiBulletsLayer->_allMutiBullets){
+		Vector<Node*> enemy2sToDelete;
+		for (auto enemy2 : _enemyLayer->_allEnemy2){
+			auto enemy = static_cast<Enemy*>(enemy2);
+			if (mutibullet->getBoundingBox().intersectsRect(enemy->getBoundingBox())){
+				if (enemy->getLife() > 1)
 				{
-					enemy2->loseLife();
-					mutiBulletsToDelete->addObject(mutiBullets);
+					enemy->loseLife();
 				}
-				else if (enemy2->getLife() == 1)
-				{
-					enemy2->loseLife();
-					mutiBulletsToDelete->addObject(mutiBullets);
-					enemy2sToDelete->addObject(enemy2);
-					score += ENEMY2_SCORE;
-					this->controlLayer->updateScore(score);
+				else if (enemy->getLife() == 1){
+					enemy->loseLife();
+					enemy2sToDelete.pushBack(enemy);
+					_score += ENEMY2_SCORE;
+					//this->controlLayer->updateScore(_score);
 				}
-				else;
+				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 			}
 		}
-		CCARRAY_FOREACH(enemy2sToDelete, et)
-		{
-			auto enemy2 = (Enemy*)et;
-			this->enemyLayer->enemy2Blowup(enemy2);
+		for (auto enemy : enemy2sToDelete){
+			_enemyLayer->enemy2Blowup(static_cast<Enemy*>(enemy));
 		}
-		enemy2sToDelete->release();
+		enemy2sToDelete.clear();
 	}
-	CCARRAY_FOREACH(mutiBulletsToDelete, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-		this->mutiBulletsLayer->RemoveMutiBullets(mutiBullets);
+	for (auto bullet : mutiBulletsToDelete){
+		_mutiBulletsLayer->removeMutiBullets(bullet);
 	}
-	mutiBulletsToDelete->removeAllObjects();
+	mutiBulletsToDelete.clear();
 
 	//enemy3 & mutiBullets CheckCollosion
-	CCARRAY_FOREACH(this->mutiBulletsLayer->m_pAllMutiBullets, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-
-		auto enemy3sToDelete = __Array::create();
-		enemy3sToDelete->retain();
-		CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy3, et)
-		{
-			auto enemy3 = (Enemy*)et;
-			if (mutiBullets->boundingBox().intersectsRect(enemy3->getBoundingBox()))
-			{
-				if (enemy3->getLife() > 1)
+	for (auto mutibullet : _mutiBulletsLayer->_allMutiBullets){
+		Vector<Node*> enemy3sToDelete;
+		for (auto enemy3 : _enemyLayer->_allEnemy3){
+			auto enemy = static_cast<Enemy*>(enemy3);
+			if (mutibullet->getBoundingBox().intersectsRect(enemy->getBoundingBox())){
+				if (enemy->getLife() > 1)
 				{
-					enemy3->loseLife();
-					mutiBulletsToDelete->addObject(mutiBullets);
+					enemy->loseLife();
 				}
-				else if (enemy3->getLife() == 1)
-				{
-					enemy3->loseLife();
-					mutiBulletsToDelete->addObject(mutiBullets);
-					enemy3sToDelete->addObject(enemy3);
-					score += ENEMY3_SCORE;
-					this->controlLayer->updateScore(score);
+				else if (enemy->getLife() == 1){
+					enemy->loseLife();
+					enemy3sToDelete.pushBack(enemy);
+					_score += ENEMY3_SCORE;
+					//this->controlLayer->updateScore(_score);
 				}
-				else;
+				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 			}
 		}
-		CCARRAY_FOREACH(enemy3sToDelete, et)
-		{
-			auto enemy3 = (Enemy*)et;
-			this->enemyLayer->enemy3Blowup(enemy3);
+		for (auto enemy : enemy3sToDelete){
+			_enemyLayer->enemy3Blowup(static_cast<Enemy*>(enemy));
 		}
-		enemy3sToDelete->release();
+		enemy3sToDelete.clear();
 	}
-	CCARRAY_FOREACH(mutiBulletsToDelete, mbt)
-	{
-		auto mutiBullets = (Sprite*)mbt;
-		this->mutiBulletsLayer->RemoveMutiBullets(mutiBullets);
+	for (auto bullet : mutiBulletsToDelete){
+		_mutiBulletsLayer->removeMutiBullets(bullet);
 	}
-	mutiBulletsToDelete->removeAllObjects();
-	mutiBulletsToDelete->release();
+	mutiBulletsToDelete.clear();
 
 
-	auto airplaneRect = this->planeLayer->getChildByTag(AIRPLANE)->boundingBox();
-	airplaneRect.origin.x += 30;
-	airplaneRect.size.width -= 60;
+	auto planeRect = PlaneLayer::getPlane()->getPlaneSprite()->getBoundingBox();
+	//planeRect.origin.x += 30;
+	//planeRect.size.width -= 60;
+
+
 	//enemy1 & airplane CheckCollosion
-	CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy1, et)
-	{
-		auto enemy1 = (Enemy*)et;
-		if (enemy1->getLife() > 0)
-		{
-			if (airplaneRect.intersectsRect(enemy1->getBoundingBox()))
+	for (auto enemy1 : _enemyLayer->_allEnemy1){
+		auto enemy = static_cast<Enemy*>(enemy1);
+		if (enemy->getLife() > 0){
+			if (planeRect.intersectsRect(enemy->getBoundingBox()))
 			{
-				this->unscheduleAllSelectors();
-				this->bulletLayer->StopShoot();
-				this->mutiBulletsLayer->StopShoot();
-				this->planeLayer->Blowup(score);
+				unscheduleAllSelectors();
+				_bulletLayer->stopShoot();
+				_mutiBulletsLayer->stopShoot();
+				_planeLayer->getPlane()->blowUp();
 				return;
 			}
 		}
 	}
 
 	//enemy2 & airplane CheckCollosion
-	CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy2, et)
-	{
-		auto enemy2 = (Enemy*)et;
-		if (enemy2->getLife() > 0)
-		{
-			if (airplaneRect.intersectsRect(enemy2->getBoundingBox()))
+	for (auto enemy2 : _enemyLayer->_allEnemy2){
+		auto enemy = static_cast<Enemy*>(enemy2);
+		if (enemy->getLife() > 0){
+			if (planeRect.intersectsRect(enemy->getBoundingBox()))
 			{
-				this->unscheduleAllSelectors();
-				this->bulletLayer->StopShoot();
-				this->mutiBulletsLayer->StopShoot();
-				this->planeLayer->Blowup(score);
+				unscheduleAllSelectors();
+				_bulletLayer->stopShoot();
+				_mutiBulletsLayer->stopShoot();
+				_planeLayer->getPlane()->blowUp();
 				return;
 			}
 		}
 	}
 
 	//enemy3 & airplane CheckCollosion
-	CCARRAY_FOREACH(this->enemyLayer->m_pAllEnemy3, et)
-	{
-		auto enemy3 = (Enemy*)et;
-		if (enemy3->getLife() > 0)
-		{
-			if (airplaneRect.intersectsRect(enemy3->getBoundingBox()))
+	for (auto enemy3 : _enemyLayer->_allEnemy3){
+		auto enemy = static_cast<Enemy*>(enemy3);
+		if (enemy->getLife() > 0){
+			if (planeRect.intersectsRect(enemy->getBoundingBox()))
 			{
-				this->unscheduleAllSelectors();
-				this->bulletLayer->StopShoot();
-				this->mutiBulletsLayer->StopShoot();
-				this->planeLayer->Blowup(score);
+				unscheduleAllSelectors();
+				_bulletLayer->stopShoot();
+				_mutiBulletsLayer->stopShoot();
+				_planeLayer->getPlane()->blowUp();
 				return;
 			}
 		}
 	}
 
 	//mutiBullets & airplane CheckCollision
-	CCARRAY_FOREACH(this->ufoLayer->m_pAllMutiBullets, ut)
-	{
-		auto mutiBullets = (Sprite*)ut;
-		if (this->planeLayer->getChildByTag(AIRPLANE)->boundingBox().intersectsRect(mutiBullets->boundingBox()))
+	for (auto mutibullet : _UFOLayer->allMutiBullets){
+		if (PlaneLayer::getPlane()->getPlaneSprite()->getBoundingBox().intersectsRect(mutibullet->getBoundingBox()))
 		{
+			
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("get_double_laser.mp3");
-			this->ufoLayer->RemoveMutiBullets(mutiBullets);
-			this->bulletLayer->StopShoot();
-			this->mutiBulletsLayer->StartShoot();
-			this->bulletLayer->StartShoot(6.2f);
+			_UFOLayer->removeMutiBullets(static_cast<Sprite*>(mutibullet));
+			_bulletLayer->stopShoot();
+			_mutiBulletsLayer->startShoot();
+			_bulletLayer->startShoot(6.2f);
+			//必须break掉，在循环中删除产生错误
+			break;;
 		}
 	}
 
 	//bigBoom & airplane CheckCollision
-	CCARRAY_FOREACH(this->ufoLayer->m_pAllBigBoom, ut)
-	{
-		auto bigBoom = (Sprite*)ut;
-		if (this->planeLayer->getChildByTag(AIRPLANE)->boundingBox().intersectsRect(bigBoom->boundingBox()))
+	for (auto bigBoom : _UFOLayer->allBigBoom){
+		if (PlaneLayer::getPlane()->getPlaneSprite()->getBoundingBox().intersectsRect(bigBoom->getBoundingBox()))
 		{
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("get_bomb.mp3");
-			this->ufoLayer->RemoveBigBoom(bigBoom);
-			bigBoomCount++;
-			updateBigBoomItem(bigBoomCount);
+			_UFOLayer->removeBigBoom(static_cast<Sprite*>(bigBoom));
+			_bigBoomCount++;
+			updateBigBoomItem(_bigBoomCount);
+			//必须break掉，在循环中删除产生错误
+			break;
 		}
 	}
+}
+
+void GameLayer::updateBigBoomItem(int bigBoomCount)
+{
+	//auto normalBomb = Sprite::createWithSpriteFrameName("bomb.png");
+	//auto pressedBomb = Sprite::createWithSpriteFrameName("bomb.png");
+	//if (bigBoomCount < 0)
+	//{
+	//	return;
+	//}
+	//else if (bigBoomCount == 0)
+	//{
+	//	if (this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+	//	{
+	//		this->removeChildByTag(TAG_BIGBOOM_MENUITEM, true);
+	//	}
+	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+	//	{
+	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+	//	}
+	//}
+	//else if (bigBoomCount == 1)
+	//{
+	//	if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+	//	{
+	//		auto pBigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
+	//		pBigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
+	//		menuBigBoom = Menu::create(pBigBoomItem, nullptr);
+	//		menuBigBoom->setPosition(Point::ZERO);
+	//		this->addChild(menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
+	//	}
+	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+	//	{
+	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+	//	}
+	//}
+	//else
+	//{
+	//	if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+	//	{
+	//		auto pBigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
+	//		pBigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
+	//		menuBigBoom = Menu::create(pBigBoomItem, nullptr);
+	//		menuBigBoom->setPosition(Point::ZERO);
+	//		this->addChild(menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
+	//	}
+	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+	//	{
+	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+	//	}
+	//	if (bigBoomCount >= 0 && bigBoomCount <= MAX_BIGBOOM_COUNT)
+	//	{
+	//		auto strScore = __String::createWithFormat("X%d", bigBoomCount);
+	//		bigBoomCountItem = Label::createWithBMFont("font.fnt", strScore->getCString());
+	//		bigBoomCountItem->setColor(Color3B(143, 146, 147));
+	//		bigBoomCountItem->setAnchorPoint(Point::ANCHOR_MIDDLE_LEFT);
+	//		bigBoomCountItem->setPosition(Point(normalBomb->getContentSize().width + 15, normalBomb->getContentSize().height / 2 + 5));
+	//		this->addChild(bigBoomCountItem, 0, TAG_BIGBOOMCOUNT_LABEL);
+	//	}
+	//}
+}
+
+void GameLayer::menuBigBoomCallback(Ref* pSender)
+{
+	//if (bigBoomCount > 0 && !Director::getInstance()->isPaused())
+	//{
+	//	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("use_bomb.mp3");
+	//	bigBoomCount--;
+	//	score += this->enemyLayer->m_pAllEnemy1->count() * ENEMY1_SCORE;
+	//	score += this->enemyLayer->m_pAllEnemy2->count() * ENEMY2_SCORE;
+	//	score += this->enemyLayer->m_pAllEnemy3->count() * ENEMY3_SCORE;
+	//	this->enemyLayer->removeAllEnemy();
+	//	updateBigBoomItem(bigBoomCount);
+	//	this->controlLayer->updateScore(score);
+	//}
 }

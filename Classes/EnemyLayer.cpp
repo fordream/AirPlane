@@ -1,12 +1,14 @@
 #include "EnemyLayer.h"
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
+#include "Global.h"
 USING_NS_CC;
 EnemyLayer::EnemyLayer()
 {
-	enemy1SpriteFrame = nullptr;
-	enemy2SpriteFrame = nullptr;
-	enemy3SpriteFrame_1 = nullptr;
-	enemy3SpriteFrame_2 = nullptr;
+	_enemy1SpriteFrame = nullptr;
+	_enemy2SpriteFrame = nullptr;
+	_enemy3SpriteFrame_1 = nullptr;
+	_enemy3SpriteFrame_2 = nullptr;
 }
 
 EnemyLayer::~EnemyLayer(){}
@@ -17,10 +19,10 @@ bool EnemyLayer::init()
 		return false;
 	}
 
-	enemy1SpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy1.png");
-	enemy2SpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy2.png");
-	enemy3SpriteFrame_1 = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy3_n1.png");
-	enemy3SpriteFrame_2 = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy3_n2.png");
+	_enemy1SpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy1.png");
+	_enemy2SpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy2.png");
+	_enemy3SpriteFrame_1 = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy3_n1.png");
+	_enemy3SpriteFrame_2 = SpriteFrameCache::getInstance()->getSpriteFrameByName("enemy3_n2.png");
 
 	auto animation1 = Animation::create();
 	animation1->setDelayPerUnit(0.1f);
@@ -60,7 +62,7 @@ bool EnemyLayer::init()
 void EnemyLayer::addEnemy1(float dt)
 {
 	auto enemy1 = Enemy::create();
-	enemy1->bindSprite(Sprite::createWithSpriteFrame(enemy1SpriteFrame), ENEMY1_MAXLIFE);
+	enemy1->bindSprite(Sprite::createWithSpriteFrame(_enemy1SpriteFrame), ENEMY1_MAXLIFE);
 
 	auto enemy1Size = enemy1->getSprite()->getContentSize();
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -71,7 +73,7 @@ void EnemyLayer::addEnemy1(float dt)
 
 	enemy1->setPosition(Point(actualX, visibleSize.height + enemy1Size.height / 2));
 	this->addChild(enemy1);
-	allEnemy1.pushBack(enemy1);
+	_allEnemy1.pushBack(enemy1);
 
 	float minDuration, maxDuration;
 	switch (GameLayer::getCurLevel())
@@ -110,7 +112,7 @@ void EnemyLayer::enemy1MoveFinished(Node* pSender)
 {
 	auto enemy1 = (Enemy*)pSender;
 	this->removeChild(enemy1, true);
-	allEnemy1.eraseObject(enemy1);
+	_allEnemy1.eraseObject(enemy1);
 }
 
 void EnemyLayer::enemy1Blowup(Enemy* enemy1)
@@ -129,14 +131,14 @@ void EnemyLayer::removeEnemy1(Node* pTarget)
 	if (enemy1 != nullptr)
 	{
 		this->removeChild(enemy1, true);
-		allEnemy1.eraseObject(enemy1);
+		_allEnemy1.eraseObject(enemy1);
 	}
 }
 
 void EnemyLayer::removeAllEnemy1()
 {
-	for (int i = 0; i < allEnemy1.size(); i++){
-		auto enemy1 = (Enemy*)allEnemy1.at(i);
+	for (int i = 0; i < _allEnemy1.size(); i++){
+		auto enemy1 = (Enemy*)_allEnemy1.at(i);
 		if (enemy1->getLife() > 0)
 		{
 			enemy1Blowup(enemy1);
@@ -147,7 +149,7 @@ void EnemyLayer::removeAllEnemy1()
 void EnemyLayer::addEnemy2(float dt)
 {
 	auto enemy2 = Enemy::create();
-	enemy2->bindSprite(Sprite::createWithSpriteFrame(enemy2SpriteFrame), ENEMY2_MAXLIFE);
+	enemy2->bindSprite(Sprite::createWithSpriteFrame(_enemy2SpriteFrame), ENEMY2_MAXLIFE);
 
 	auto enemy2Size = enemy2->getSprite()->getContentSize();
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -158,7 +160,7 @@ void EnemyLayer::addEnemy2(float dt)
 
 	enemy2->setPosition(Point(actualX, visibleSize.height + enemy2Size.height / 2));
 	this->addChild(enemy2);
-	allEnemy2.pushBack(enemy2);
+	_allEnemy2.pushBack(enemy2);
 
 	float minDuration, maxDuration;
 	switch (GameLayer::getCurLevel())
@@ -197,7 +199,7 @@ void EnemyLayer::enemy2MoveFinished(Node* pSender)
 {
 	auto enemy2 = (Enemy*)pSender;
 	this->removeChild(enemy2, true);
-	allEnemy2.eraseObject(enemy2);
+	_allEnemy2.eraseObject(enemy2);
 }
 
 void EnemyLayer::enemy2Blowup(Enemy* enemy2)
@@ -216,14 +218,14 @@ void EnemyLayer::removeEnemy2(Node* pTarget)
 	if (enemy2 != nullptr)
 	{
 		this->removeChild(enemy2, true);
-		allEnemy2.eraseObject(enemy2);
+		_allEnemy2.eraseObject(enemy2);
 	}
 }
 
 void EnemyLayer::removeAllEnemy2()
 {
-	for (int i = 0; i < allEnemy2.size(); i++){
-		auto enemy2 = (Enemy*)allEnemy2.at(i);
+	for (int i = 0; i < _allEnemy2.size(); i++){
+		auto enemy2 = (Enemy*)_allEnemy2.at(i);
 		if (enemy2->getLife() > 0)
 		{
 			enemy2Blowup(enemy2);
@@ -234,7 +236,7 @@ void EnemyLayer::removeAllEnemy2()
 void EnemyLayer::addEnemy3(float dt)
 {
 	auto enemy3 = Enemy::create();
-	enemy3->bindSprite(Sprite::createWithSpriteFrame(enemy3SpriteFrame_1), ENEMY3_MAXLIFE);
+	enemy3->bindSprite(Sprite::createWithSpriteFrame(_enemy3SpriteFrame_1), ENEMY3_MAXLIFE);
 
 	auto enemy3Size = enemy3->getSprite()->getContentSize();
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -245,7 +247,7 @@ void EnemyLayer::addEnemy3(float dt)
 
 	enemy3->setPosition(Point(actualX, visibleSize.height + enemy3Size.height / 2));
 	this->addChild(enemy3);
-	allEnemy3.pushBack(enemy3);
+	_allEnemy3.pushBack(enemy3);
 
 	float minDuration, maxDuration;
 	switch (GameLayer::getCurLevel())
@@ -280,8 +282,8 @@ void EnemyLayer::addEnemy3(float dt)
 
 	auto animation = Animation::create();
 	animation->setDelayPerUnit(0.2f);
-	animation->addSpriteFrame(enemy3SpriteFrame_1);
-	animation->addSpriteFrame(enemy3SpriteFrame_2);
+	animation->addSpriteFrame(_enemy3SpriteFrame_1);
+	animation->addSpriteFrame(_enemy3SpriteFrame_2);
 	auto animate = Animate::create(animation);
 	enemy3->getSprite()->runAction(RepeatForever::create(animate));
 
@@ -291,7 +293,7 @@ void EnemyLayer::enemy3MoveFinished(Node* pSender)
 {
 	auto enemy3 = (Enemy*)pSender;
 	this->removeChild(enemy3, true);
-	allEnemy3.eraseObject(enemy3);
+	_allEnemy3.eraseObject(enemy3);
 }
 
 void EnemyLayer::enemy3Blowup(Enemy* enemy3)
@@ -310,14 +312,14 @@ void EnemyLayer::removeEnemy3(Node* pTarget)
 	if (enemy3 != nullptr)
 	{
 		this->removeChild(enemy3, true);
-		allEnemy3.eraseObject(enemy3);
+		_allEnemy3.eraseObject(enemy3);
 	}
 }
 
 void EnemyLayer::removeAllEnemy3()
 {
-	for (int i = 0; i < allEnemy3.size(); i++){
-		auto enemy3 = (Enemy*)allEnemy3.at(i);
+	for (int i = 0; i < _allEnemy3.size(); i++){
+		auto enemy3 = (Enemy*)_allEnemy3.at(i);
 		if (enemy3->getLife() > 0)
 		{
 			enemy3Blowup(enemy3);

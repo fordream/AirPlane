@@ -1,11 +1,13 @@
-#ifndef __GAMESCENE_SCENE_H__
-#define __GAMESCENE_SCENE_H__
+#ifndef __GAME_SCENE_H__
+#define __GAME_SCENE_H__
 
 #include "cocos2d.h"
 #include "GameLayer.h"
 #include "PlaneLayer.h"
 #include "BulletLayer.h"
 #include "EnemyLayer.h"
+#include "MutiBulletsLayer.h"
+#include "UFOLayer.h"
 class GameScene :
 	public cocos2d::Scene
 {
@@ -23,6 +25,8 @@ private:
 	PlaneLayer* _planeLayer;
 	BulletLayer* _bulletLayer;
 	EnemyLayer* _enemyLayer;
+	UFOLayer* _UFOLayer;
+	MutiBulletsLayer* _mutiBulletsLayer;
 };
 
 #endif

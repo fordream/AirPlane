@@ -2,11 +2,6 @@
 #define __ENEMY_LAYER_H__
 #include "cocos2d.h"
 #include "Enemy.h"
-#include "SimpleAudioEngine.h"
-
-const int ENEMY1_MAXLIFE = 1;
-const int ENEMY2_MAXLIFE = 2;
-const int ENEMY3_MAXLIFE = 5;
 
 enum Level
 {
@@ -43,13 +38,13 @@ public:
 	void removeAllEnemy3();
 	void removeAllEnemy();
 
-	cocos2d::Vector<cocos2d::Node*> allEnemy1;
-	cocos2d::Vector<cocos2d::Node*> allEnemy2;
-	cocos2d::Vector<cocos2d::Node*> allEnemy3;
+	cocos2d::Vector<cocos2d::Node*> _allEnemy1;
+	cocos2d::Vector<cocos2d::Node*> _allEnemy2;
+	cocos2d::Vector<cocos2d::Node*> _allEnemy3;
 private:
-	cocos2d::SpriteFrame* enemy1SpriteFrame;
-	cocos2d::SpriteFrame* enemy2SpriteFrame;
-	cocos2d::SpriteFrame* enemy3SpriteFrame_1;
-	cocos2d::SpriteFrame* enemy3SpriteFrame_2;
+	cocos2d::SpriteFrame* _enemy1SpriteFrame;
+	cocos2d::SpriteFrame* _enemy2SpriteFrame;
+	cocos2d::SpriteFrame* _enemy3SpriteFrame_1;
+	cocos2d::SpriteFrame* _enemy3SpriteFrame_2;
 };
 #endif

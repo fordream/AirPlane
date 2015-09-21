@@ -21,7 +21,7 @@ void BulletLayer::bulletMoveFinished(Node* pSender)
 	this->removeChild(bullet, true);//移除屏幕
 }
 
-void BulletLayer::startShoot(float delay)//这里使用的是一个缺省函数，为什么这么用，后面会解释到。  
+void BulletLayer::startShoot(float delay)
 {
 	schedule(schedule_selector(BulletLayer::addBullet), 0.2f, kRepeatForever, delay);
 }

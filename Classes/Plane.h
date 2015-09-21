@@ -6,7 +6,6 @@ public:
 	bool isAlive;
 	void moveTo(cocos2d::Vec2);
 	void blowUp();
-	void remove();
 	static Plane* getInstance();
 
 	virtual bool init();

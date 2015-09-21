@@ -14,17 +14,17 @@ public:
 
 	CREATE_FUNC(UFOLayer);
 
-	void AddMutiBullets(float dt);
+	void addMutiBullets(float dt);
 
 	void mutiBulletsMoveFinished(cocos2d::Node* pSender);
 
-	void RemoveMutiBullets(cocos2d::Sprite* mutiBullets);
+	void removeMutiBullets(cocos2d::Sprite* mutiBullets);
 
-	void AddBigBoom(float dt);
+	void addBigBoom(float dt);
 
 	void bigBoomMoveFinished(cocos2d::Node* pSender);
 
-	void RemoveBigBoom(cocos2d::Sprite* bigBoom);
+	void removeBigBoom(cocos2d::Sprite* bigBoom);
 
 public:
 

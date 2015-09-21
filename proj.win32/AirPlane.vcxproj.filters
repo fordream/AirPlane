@@ -54,6 +54,24 @@
     <ClCompile Include="..\Classes\EnemyLayer.cpp">
       <Filter>Classes\层</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\UFOLayer.cpp">
+      <Filter>Classes\层</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MutiBulletsLayer.cpp">
+      <Filter>Classes\层</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WelcomeScene.cpp">
+      <Filter>Classes\场景</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WelcomeLayer.cpp">
+      <Filter>Classes\层</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameOverScene.cpp">
+      <Filter>Classes\场景</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameOverLayer.cpp">
+      <Filter>Classes\层</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -87,6 +105,24 @@
       <Filter>Classes\精灵</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\EnemyLayer.h">
+      <Filter>Classes\层</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UFOLayer.h">
+      <Filter>Classes\层</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MutiBulletsLayer.h">
+      <Filter>Classes\层</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WelcomeScene.h">
+      <Filter>Classes\场景</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WelcomeLayer.h">
+      <Filter>Classes\层</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameOverScene.h">
+      <Filter>Classes\场景</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameOverLayer.h">
       <Filter>Classes\层</Filter>
     </ClInclude>
   </ItemGroup>
