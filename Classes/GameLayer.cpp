@@ -67,9 +67,9 @@ void GameLayer::update(float dt)
 					enemy1->loseLife();
 					enemy1sToDelete.pushBack(enemy1);
 					_score += ENEMY1_SCORE;
-					//this->controlLayer->updateScore(score);
+					_controlLayer->updateScore(_score);
+					bulletsToDelete.pushBack(bullet);
 				}
-				bulletsToDelete.pushBack(bullet);
 			}
 		}
 		for (int j = 0; j < enemy1sToDelete.size(); j++){
@@ -92,15 +92,16 @@ void GameLayer::update(float dt)
 			{
 				if (enemy2->getLife()>1){
 					enemy2->loseLife();
+					bulletsToDelete.pushBack(bullet);
 				}
 				else if (enemy2->getLife() == 1)
 				{
 					enemy2->loseLife();
 					enemy2sToDelete.pushBack(enemy2);
 					_score += ENEMY2_SCORE;
-					//this->controlLayer->updateScore(score);
+					_controlLayer->updateScore(_score);
+					bulletsToDelete.pushBack(bullet);
 				}
-				bulletsToDelete.pushBack(bullet);
 			}
 		}
 		for (int j = 0; j < enemy2sToDelete.size(); j++){
@@ -123,15 +124,16 @@ void GameLayer::update(float dt)
 			{
 				if (enemy3->getLife()>1){
 					enemy3->loseLife();
+					bulletsToDelete.pushBack(bullet);
 				}
 				else if (enemy3->getLife() == 1)
 				{
 					enemy3->loseLife();
 					enemy3sToDelete.pushBack(enemy3);
 					_score += ENEMY3_SCORE;
-					//this->controlLayer->updateScore(score);
+					_controlLayer->updateScore(_score);
+					bulletsToDelete.pushBack(bullet);
 				}
-				bulletsToDelete.pushBack(bullet);
 			}
 		}
 		for (int j = 0; j < enemy3sToDelete.size(); j++){
@@ -158,9 +160,10 @@ void GameLayer::update(float dt)
 					enemy->loseLife();
 					enemy1sToDelete.pushBack(enemy);
 					_score += ENEMY1_SCORE;
-					//this->controlLayer->updateScore(score);
+					mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
+					_controlLayer->updateScore(_score);
 				}
-				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
+				
 			}
 		}
 		for (auto enemy : enemy1sToDelete){
@@ -182,14 +185,15 @@ void GameLayer::update(float dt)
 				if (enemy->getLife() > 1)
 				{
 					enemy->loseLife();
+					mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 				}
 				else if (enemy->getLife() == 1){
 					enemy->loseLife();
 					enemy2sToDelete.pushBack(enemy);
 					_score += ENEMY2_SCORE;
-					//this->controlLayer->updateScore(_score);
+					mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
+					_controlLayer->updateScore(_score);
 				}
-				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 			}
 		}
 		for (auto enemy : enemy2sToDelete){
@@ -211,14 +215,16 @@ void GameLayer::update(float dt)
 				if (enemy->getLife() > 1)
 				{
 					enemy->loseLife();
+					mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
 				}
 				else if (enemy->getLife() == 1){
 					enemy->loseLife();
 					enemy3sToDelete.pushBack(enemy);
 					_score += ENEMY3_SCORE;
-					//this->controlLayer->updateScore(_score);
+					mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
+					_controlLayer->updateScore(_score);
 				}
-				mutiBulletsToDelete.pushBack(static_cast<Sprite*>(mutibullet));
+				
 			}
 		}
 		for (auto enemy : enemy3sToDelete){
@@ -304,84 +310,84 @@ void GameLayer::update(float dt)
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("get_bomb.mp3");
 			_UFOLayer->removeBigBoom(static_cast<Sprite*>(bigBoom));
 			_bigBoomCount++;
-			updateBigBoomItem(_bigBoomCount);
+			updateBigBoomItem();
 			//必须break掉，在循环中删除产生错误
 			break;
 		}
 	}
 }
 
-void GameLayer::updateBigBoomItem(int bigBoomCount)
+void GameLayer::updateBigBoomItem()
 {
-	//auto normalBomb = Sprite::createWithSpriteFrameName("bomb.png");
-	//auto pressedBomb = Sprite::createWithSpriteFrameName("bomb.png");
-	//if (bigBoomCount < 0)
-	//{
-	//	return;
-	//}
-	//else if (bigBoomCount == 0)
-	//{
-	//	if (this->getChildByTag(TAG_BIGBOOM_MENUITEM))
-	//	{
-	//		this->removeChildByTag(TAG_BIGBOOM_MENUITEM, true);
-	//	}
-	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
-	//	{
-	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
-	//	}
-	//}
-	//else if (bigBoomCount == 1)
-	//{
-	//	if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
-	//	{
-	//		auto pBigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
-	//		pBigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
-	//		menuBigBoom = Menu::create(pBigBoomItem, nullptr);
-	//		menuBigBoom->setPosition(Point::ZERO);
-	//		this->addChild(menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
-	//	}
-	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
-	//	{
-	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
-	//	}
-	//}
-	//else
-	//{
-	//	if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
-	//	{
-	//		auto pBigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
-	//		pBigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
-	//		menuBigBoom = Menu::create(pBigBoomItem, nullptr);
-	//		menuBigBoom->setPosition(Point::ZERO);
-	//		this->addChild(menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
-	//	}
-	//	if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
-	//	{
-	//		this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
-	//	}
-	//	if (bigBoomCount >= 0 && bigBoomCount <= MAX_BIGBOOM_COUNT)
-	//	{
-	//		auto strScore = __String::createWithFormat("X%d", bigBoomCount);
-	//		bigBoomCountItem = Label::createWithBMFont("font.fnt", strScore->getCString());
-	//		bigBoomCountItem->setColor(Color3B(143, 146, 147));
-	//		bigBoomCountItem->setAnchorPoint(Point::ANCHOR_MIDDLE_LEFT);
-	//		bigBoomCountItem->setPosition(Point(normalBomb->getContentSize().width + 15, normalBomb->getContentSize().height / 2 + 5));
-	//		this->addChild(bigBoomCountItem, 0, TAG_BIGBOOMCOUNT_LABEL);
-	//	}
-	//}
+	auto normalBomb = Sprite::createWithSpriteFrameName("bomb.png");
+	auto pressedBomb = Sprite::createWithSpriteFrameName("bomb.png");
+	if (_bigBoomCount < 0)
+	{
+		return;
+	}
+	else if (_bigBoomCount == 0)
+	{
+		if (this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+		{
+			this->removeChildByTag(TAG_BIGBOOM_MENUITEM, true);
+		}
+		if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+		{
+			this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+		}
+	}
+	else if (_bigBoomCount == 1)
+	{
+		if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+		{
+			auto bigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
+			bigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
+			_menuBigBoom = Menu::create(bigBoomItem, nullptr);
+			_menuBigBoom->setPosition(Point::ZERO);
+			this->addChild(_menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
+		}
+		if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+		{
+			this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+		}
+	}
+	else
+	{
+		if (!this->getChildByTag(TAG_BIGBOOM_MENUITEM))
+		{
+			auto pBigBoomItem = MenuItemSprite::create(normalBomb, pressedBomb, nullptr, CC_CALLBACK_1(GameLayer::menuBigBoomCallback, this));
+			pBigBoomItem->setPosition(Point(normalBomb->getContentSize().width / 2 + 10, normalBomb->getContentSize().height / 2 + 10));
+			_menuBigBoom = Menu::create(pBigBoomItem, nullptr);
+			_menuBigBoom->setPosition(Point::ZERO);
+			this->addChild(_menuBigBoom, 0, TAG_BIGBOOM_MENUITEM);
+		}
+		if (this->getChildByTag(TAG_BIGBOOMCOUNT_LABEL))
+		{
+			this->removeChildByTag(TAG_BIGBOOMCOUNT_LABEL, true);
+		}
+		if (_bigBoomCount >= 0 && _bigBoomCount <= MAX_BIGBOOM_COUNT)
+		{
+			auto strScore = StringUtils::format("X%d", _bigBoomCount);
+			_bigBoomCountItem = Label::createWithBMFont("font.fnt", strScore);
+			_bigBoomCountItem->setColor(Color3B(143, 146, 147));
+			_bigBoomCountItem->setAnchorPoint(Point::ANCHOR_MIDDLE_LEFT);
+			_bigBoomCountItem->setPosition(Point(normalBomb->getContentSize().width + 15, normalBomb->getContentSize().height / 2 + 5));
+			this->addChild(_bigBoomCountItem, 0, TAG_BIGBOOMCOUNT_LABEL);
+		}
+	}
 }
 
 void GameLayer::menuBigBoomCallback(Ref* pSender)
 {
-	//if (bigBoomCount > 0 && !Director::getInstance()->isPaused())
-	//{
-	//	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("use_bomb.mp3");
-	//	bigBoomCount--;
-	//	score += this->enemyLayer->m_pAllEnemy1->count() * ENEMY1_SCORE;
-	//	score += this->enemyLayer->m_pAllEnemy2->count() * ENEMY2_SCORE;
-	//	score += this->enemyLayer->m_pAllEnemy3->count() * ENEMY3_SCORE;
-	//	this->enemyLayer->removeAllEnemy();
-	//	updateBigBoomItem(bigBoomCount);
-	//	this->controlLayer->updateScore(score);
-	//}
+	if (_bigBoomCount > 0 && !Director::getInstance()->isPaused())
+	{
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("use_bomb.mp3");
+		_bigBoomCount--;
+		_score += _enemyLayer->_allEnemy1.size() * ENEMY1_SCORE;
+		_score += _enemyLayer->_allEnemy2.size() * ENEMY2_SCORE;
+		_score += _enemyLayer->_allEnemy3.size() * ENEMY3_SCORE;
+		_enemyLayer->removeAllEnemy();
+		updateBigBoomItem();
+		_controlLayer->updateScore(_score);
+	}
 }

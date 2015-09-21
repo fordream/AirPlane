@@ -8,6 +8,7 @@
 #include "EnemyLayer.h"
 #include "MutiBulletsLayer.h"
 #include "UFOLayer.h"
+#include "ControlLayer.h"
 class GameScene :
 	public cocos2d::Scene
 {
@@ -27,6 +28,7 @@ private:
 	EnemyLayer* _enemyLayer;
 	UFOLayer* _UFOLayer;
 	MutiBulletsLayer* _mutiBulletsLayer;
+	ControlLayer* _controlLayer;
 };
 
 #endif
