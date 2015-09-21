@@ -252,7 +252,7 @@ void GameLayer::update(float dt)
 				unscheduleAllSelectors();
 				_bulletLayer->stopShoot();
 				_mutiBulletsLayer->stopShoot();
-				_planeLayer->getPlane()->blowUp();
+				_planeLayer->getPlane()->blowUp(_score);
 				return;
 			}
 		}
@@ -267,7 +267,7 @@ void GameLayer::update(float dt)
 				unscheduleAllSelectors();
 				_bulletLayer->stopShoot();
 				_mutiBulletsLayer->stopShoot();
-				_planeLayer->getPlane()->blowUp();
+				_planeLayer->getPlane()->blowUp(_score);
 				return;
 			}
 		}
@@ -282,7 +282,7 @@ void GameLayer::update(float dt)
 				unscheduleAllSelectors();
 				_bulletLayer->stopShoot();
 				_mutiBulletsLayer->stopShoot();
-				_planeLayer->getPlane()->blowUp();
+				_planeLayer->getPlane()->blowUp(_score);
 				return;
 			}
 		}

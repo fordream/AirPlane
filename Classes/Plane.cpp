@@ -1,5 +1,6 @@
 #include "Plane.h"
 #include "Global.h"
+#include "GameOverScene.h"
 USING_NS_CC;
 Plane* Plane::_instance = nullptr;
 Plane* Plane::getInstance(){
@@ -19,11 +20,13 @@ bool Plane::init(){
 	animation->setDelayPerUnit(0.1f);
 	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(HERO1_IMAGE));
 	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(HERO2_IMAGE));
+	animation->setRestoreOriginalFrame(true);
 	auto animate = Animate::create(animation);//帧动画  
 
 	_plane->runAction(blink);//执行闪烁动画
 	_plane->runAction(RepeatForever::create(animate));// 执行帧动画  
 
+	this->retain();
 	return true;
 }
 void Plane::moveTo(Vec2 location){
@@ -50,23 +53,34 @@ void Plane::moveTo(Vec2 location){
 		_plane->setPosition(location);
 	}
 }
-void Plane::blowUp(){
-	//if (isAlive)
-	//{
-	//	isAlive = false;
-	//	auto animation = Animation::create();
-	//	animation->setDelayPerUnit(0.2f);
-	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n1.png"));
-	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n2.png"));
-	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n3.png"));
-	//	animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n4.png"));
+void Plane::blowUp(int score){
+	if (isAlive)
+	{
+		isAlive = false;
+		_score = score;
+		log("blowUp%d", _score);
+		auto animation = Animation::create();
+		animation->setDelayPerUnit(0.2f);
+		animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n1.png"));
+		animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n2.png"));
+		animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n3.png"));
+		animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("hero_blowup_n4.png"));
 
-	//	auto animate = Animate::create(animation);
-	//	auto removePlane = CallFunc::create(CC_CALLBACK_0(PlaneLayer::RemovePlane, this));
-	//	auto sequence = Sequence::create(animate, removePlane, nullptr);
-	//	this->getChildByTag(AIRPLANE)->stopAllActions();
-	//	this->getChildByTag(AIRPLANE)->runAction(sequence);
-	//}
+		auto animate = Animate::create(animation);
+		auto removePlane = CallFunc::create(CC_CALLBACK_0(Plane::remove, this));
+		auto sequence = Sequence::create(animate, removePlane, nullptr);
+		
+		this->getPlaneSprite()->stopAllActions();
+		this->getPlaneSprite()->runAction(sequence);
+	}
+}
+void Plane::remove(){
+	//还原
+	_plane->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(HERO1_IMAGE));
+	this->removeFromParent();
+	auto over = GameOverScene::create(_score);
+	auto animateScene = TransitionMoveInT::create(0.8f, over);
+	Director::getInstance()->replaceScene(animateScene);
 }
 Plane* Plane::create()
 {

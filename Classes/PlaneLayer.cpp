@@ -11,6 +11,7 @@ bool PlaneLayer::init(){
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	_plane = Plane::getInstance();
+	_plane->isAlive = true;
 	_plane->getPlaneSprite()->setPosition(Vec2(origin.x + visibleSize.width / 2, 
 		_plane->getPlaneSprite()->getContentSize().height / 2));//飞机放置在底部中央  
 	this->addChild(_plane, 0, AIRPLANE);//添加精灵，AIRPLANE是tag

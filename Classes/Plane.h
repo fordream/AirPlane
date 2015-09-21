@@ -5,7 +5,8 @@ class Plane:public cocos2d::Node{
 public:
 	bool isAlive;
 	void moveTo(cocos2d::Vec2);
-	void blowUp();
+	void blowUp(int);
+	void remove();
 	static Plane* getInstance();
 
 	virtual bool init();
@@ -18,5 +19,6 @@ private:
 	static Plane* create();
 	cocos2d::Sprite* _plane;
 	static Plane* _instance;
+	int _score;
 };
 #endif

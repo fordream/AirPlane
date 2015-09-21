@@ -1,20 +1,18 @@
 #include "GameOverScene.h"
 USING_NS_CC;
-GameOverScene::GameOverScene(void)
+GameOverScene::GameOverScene()
 {
 	_gameOverLayer = nullptr;
 	_score = 0;
 }
 
-GameOverScene::~GameOverScene(void)
-{
-
-}
+GameOverScene::~GameOverScene(){}
 
 GameOverScene* GameOverScene::create(int passScore)
 {
 	GameOverScene *pRet = new GameOverScene();
 	pRet->_score = passScore;
+	log("GameOverScene£º%d", passScore);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -24,6 +22,7 @@ GameOverScene* GameOverScene::create(int passScore)
 		delete pRet;
 		pRet = nullptr;
 	}
+
 	return pRet;
 }
 

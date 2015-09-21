@@ -18,6 +18,7 @@ GameOverLayer* GameOverLayer::create(int passScore)
 {
 	GameOverLayer *pRet = new GameOverLayer();
 	pRet->_score = passScore;
+	log("GameOverLayer%d", passScore);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
